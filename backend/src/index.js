@@ -5,9 +5,10 @@ import messageRoutes from "./routes/message.route.js";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { app, server } from "./lib/socket.js";
 
-const app = express();
 dotenv.config();
+
 const PORT = process.env.PORT;
 
 app.use(express.json());
@@ -22,7 +23,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("server is running in PORT:" + PORT);
   connectDB();
 });
