@@ -3,7 +3,8 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
 
 // Example type for your user — adjust fields to match your backend
 export interface AuthUser {
@@ -11,6 +12,7 @@ export interface AuthUser {
   fullName: string;
   email: string;
   profilePic: string | null;
+  createdAt?: string;
 }
 
 // Input types for signup/login/update
@@ -44,7 +46,7 @@ interface AuthState {
   signup: (data: SignupData) => Promise<void>;
   login: (data: LoginData) => Promise<void>;
   logout: () => Promise<void>;
-  updateProfile: (data: UpdateProfileData) => Promise<void>;
+  updateProfile: ({ profilePic }: { profilePic: string }) => Promise<void>;
   connectSocket: () => void;
   disconnectSocket: () => void;
 }
