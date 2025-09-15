@@ -25,9 +25,8 @@ app.use(
   })
 );
 
-app.use(`${process.env.API_PREFIX}/auth`, authRoutes);
-app.use(`${process.env.API_PREFIX}/messages`, messageRoutes); // ✅ works
-// ✅ works
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
