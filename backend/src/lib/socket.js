@@ -1,4 +1,4 @@
-import { server } from "socket.io";
+import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 
@@ -15,22 +15,20 @@ export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
 }
 
-//used to store online users
-const userSocketMap = {}; //{userId: socketId}
+// used to store online users
+const userSocketMap = {}; // {userId: socketId}
 
 io.on("connection", (socket) => {
-  console.log("A user connexted", socket.id);
+  console.log("A user connected", socket.id);
 
   const userId = socket.handshake.query.userId;
-  if (userId) {
-    userSocketMap[userId] = socket.id;
-  }
+  if (userId) userSocketMap[userId] = socket.id;
 
-  //boardcast event to all users
+  // io.emit() is used to send events to all the connected clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
   socket.on("disconnect", () => {
     console.log("A user disconnected", socket.id);
-
     delete userSocketMap[userId];
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
